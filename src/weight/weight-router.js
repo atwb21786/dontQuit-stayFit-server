@@ -1,7 +1,7 @@
 const express = require('express')
 const path = require('path')
 const xss = require('xss')
-const WeightService = require('./weight/weight-service')
+const WeightService = require('./weight-service')
 const { requireAuth } = require('../middleware/auth')
 
 const weightRouter = express.Router()
@@ -79,7 +79,7 @@ weightRouter
                 })
                 .catch(next)
         })
-        .patch(jsonParser, (req, res, next) => {
+        .patch(jsonBodyParser, (req, res, next) => {
             const { id, date_created, content } = req.body
             const newGoals = { id, date_created, content }
 
@@ -102,4 +102,4 @@ weightRouter
                 .catch(next)
         })
 
-module.exports = goalsRouter
+module.exports = weightRouter

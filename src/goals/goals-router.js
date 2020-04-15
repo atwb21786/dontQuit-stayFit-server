@@ -1,7 +1,7 @@
 const express = require('express')
 const path = require('path')
 const xss = require('xss')
-const GoalsService = require('./goals/goals-service')
+const GoalsService = require('./goals-service')
 const { requireAuth } = require('../middleware/auth')
 
 const goalsRouter = express.Router()
@@ -79,7 +79,7 @@ goalsRouter
                 })
                 .catch(next)
         })
-        .patch(jsonParser, (req, res, next) => {
+        .patch(jsonBodyParser, (req, res, next) => {
             const { id, date_created, content } = req.body
             const newGoals = { id, date_created, content }
 

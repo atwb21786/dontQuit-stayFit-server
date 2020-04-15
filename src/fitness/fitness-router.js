@@ -79,7 +79,7 @@ fitnessRouter
                 })
                 .catch(next)
         })
-        .patch(jsonParser, (req, res, next) => {
+        .patch(jsonBodyParser, (req, res, next) => {
             const { id, date_created, content } = req.body
             const newFitness = { id, date_created, content }
 

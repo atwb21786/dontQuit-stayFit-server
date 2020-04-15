@@ -5,6 +5,9 @@ const cors = require('cors')
 const helmet = require('helmet')
 const { NODE_ENV, DATABASE_URL } = require('./config')
 const feedbackRouter = require('./feedback/feedback-router')
+const goalsRouter = require('./goals/goals-router')
+const fitnessRouter = require('./fitness/fitness-router')
+const weightRouter = require('./weight/weight-router')
 const knex = require('knex')
 const db = knex({ 
     client: 'pg',
@@ -32,6 +35,9 @@ app.get('/login', (req, res) => {
 })
 
 app.use('/feedback', feedbackRouter)
+app.use('/goals', goalsRouter)
+app.use('/fitness', fitnessRouter)
+app.use('/weigh_in', weightRouter)
 
 app.use(function errorHandler(error, req, res, next) {
     let response;
