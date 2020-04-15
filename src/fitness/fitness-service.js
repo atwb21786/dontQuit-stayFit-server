@@ -23,3 +23,5 @@ const FitnessService = {
     }
     
   }
+
+  module.exports = FitnessService

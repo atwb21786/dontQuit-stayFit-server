@@ -23,3 +23,5 @@ const WeightService = {
     }
     
   }
+
+  module.exports = WeightService

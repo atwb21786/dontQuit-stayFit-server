@@ -9,7 +9,7 @@ const jsonBodyParser = express.json()
 
 const serializeWeight = weight => ({
     id: weight.id,
-    content: xss(weight.content),
+    measurement: xss(weight.measurement),
     date_created: weight.date_created
 })
 
@@ -24,8 +24,8 @@ weightRouter
         .catch(next)
   })
   .post(requireAuth, jsonBodyParser, (req, res, next) => {
-    const { id, date_created, content } = req.body
-    const newWeight = { id, date_created, content }
+    const { id, date_created, measurement } = req.body
+    const newWeight = { id, date_created, measurement }
 
     for (const [key, value] of Object.entries(newWeight))
       if (value == null)
@@ -33,17 +33,17 @@ weightRouter
           error: `Missing '${key}' in request body`
         })
 
-    newWeight.weight_id = req.weight.id
+    newWeight.weigh_in_id = req.weigh_in.id
 
     WeightService.insertWeight(
       req.app.get('db'),
       newWeight
     )
-      .then(goals => {
+      .then(wt => {
         res
           .status(201)
-          .location(path.posix.join(req.originalUrl, `/${weight.id}`))
-          .json(WeightService.serializeWeight(goals))
+          .location(path.posix.join(req.originalUrl, `/${wt.id}`))
+          .json(WeightService.serializeWeight(wt))
       })
       .catch(next)
     })
@@ -58,7 +58,7 @@ weightRouter
                 .then(wt => {
                     if(!wt) {
                         return res.status(404).json({
-                            error: { message: `Goal doesn't exist`}
+                            error: { message: `Weight doesn't exist`}
                         })
                     }
                     res.wt = wt
@@ -67,12 +67,12 @@ weightRouter
                 .catch(next)
         })
         .get((req, res, next) => {
-            res.json(serializeGoals(res.goals))
+            res.json(serializeWeight(res.goals))
         })
         .delete((req, res, next) => {
-            GoalsService.deleteGoals(
+            WeightService.deleteWeight(
                 req.app.get('db'),
-                req.params.goals_id
+                req.params.weigh_in_id
             )
                 .then(numRowsAffected => {
                     res.status(204).end()
@@ -80,21 +80,21 @@ weightRouter
                 .catch(next)
         })
         .patch(jsonBodyParser, (req, res, next) => {
-            const { id, date_created, content } = req.body
-            const newGoals = { id, date_created, content }
+            const { id, date_created, measurement } = req.body
+            const newWeight = { id, date_created, measurement }
 
-            const numVals = Object.values(newGoals).filter(Boolean).length
+            const numVals = Object.values(newWeight).filter(Boolean).length
             if (numVals === 0)
                 return res.status(400).json({
                     error: {
-                        message: `Request body must contain either 'id', 'date_created', or 'content'`
+                        message: `Request body must contain either 'id', 'date_created', or 'measurement'`
                     }
                 })
 
-            GoalsService.updateGoals(
+            WeightService.updateWeight(
                 req.app.get('db'),
-                req.params.goals_id,
-                newGoals
+                req.params.weigh_in_id,
+                newWeight
             )
                 .then(numRowsAffected => {
                     res.status(204).end()

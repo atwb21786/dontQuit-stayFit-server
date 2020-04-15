@@ -8,6 +8,10 @@ const feedbackRouter = require('./feedback/feedback-router')
 const goalsRouter = require('./goals/goals-router')
 const fitnessRouter = require('./fitness/fitness-router')
 const weightRouter = require('./weight/weight-router')
+const GoalsService = require('./goals/goals-service')
+const FitnessService = require('./fitness/fitness-service')
+const FeedbackService = require('./feedback/feedback-service')
+const WeightService = require('./weight/weight-service')
 const knex = require('knex')
 const db = knex({ 
     client: 'pg',
@@ -30,12 +34,81 @@ app.get('/', (req, res) => {
     res.send('Hello, world!')
 })
 
-app.get('/login', (req, res) => {
-    res.send('Hello, world!')
+app.get('/goals', (req, res, next) => {
+    const knexInstance = req.app.get('db')
+    GoalsService.getAllGoals(knexInstance)
+      .then(goal => {
+        res.json(goal)
+      })
+      .catch(next)
+  })
+
+app.get('/goals/:goals_id', (req, res, next) => {
+const knexInstance = req.app.get('db')
+GoalsService.getById(knexInstance, req.params.goals_id)
+    .then(goal => {
+    res.json(goal)
+    })
+    .catch(next)
 })
 
-app.use('/feedback', feedbackRouter)
+app.get('/fitness', (req, res, next) => {
+    const knexInstance = req.app.get('db')
+    FitnessService.getAllFitness(knexInstance)
+      .then(fit => {
+        res.json(fit)
+      })
+      .catch(next)
+  })
+
+app.get('/fitness/:fitness_id', (req, res, next) => {
+const knexInstance = req.app.get('db')
+FitnessService.getById(knexInstance, req.params.fitness_id)
+    .then(fit => {
+    res.json(fit)
+    })
+    .catch(next)
+})
+
+app.get('/feedback', (req, res, next) => {
+    const knexInstance = req.app.get('db')
+    FeedbackService.getAllFeedback(knexInstance)
+      .then(fb => {
+        res.json(fb)
+      })
+      .catch(next)
+  })
+
+app.get('/feedback/:feedback_id', (req, res, next) => {
+const knexInstance = req.app.get('db')
+FeedbackService.getById(knexInstance, req.params.feedback_id)
+    .then(fb => {
+    res.json(fb)
+    })
+    .catch(next)
+})
+
+app.get('/weigh_in', (req, res, next) => {
+    const knexInstance = req.app.get('db')
+    WeightService.getAllWeight(knexInstance)
+      .then(wt => {
+        res.json(wt)
+      })
+      .catch(next)
+  })
+
+app.get('/weigh_in/:weigh_in_id', (req, res, next) => {
+    const knexInstance = req.app.get('db')
+    WeightService.getById(knexInstance, req.params.weigh_in_id)
+        .then(wt => {
+        res.json(wt)
+        })
+        .catch(next)
+    })
+
 app.use('/goals', goalsRouter)
+app.use('/feedback', feedbackRouter)
+
 app.use('/fitness', fitnessRouter)
 app.use('/weigh_in', weightRouter)
 
