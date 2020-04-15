@@ -3,9 +3,17 @@ const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
 const helmet = require('helmet')
-const { NODE_ENV } = require('./config')
+const { NODE_ENV, DATABASE_URL } = require('./config')
+const feedbackRouter = require('./feedback/feedback-router')
+const knex = require('knex')
+const db = knex({ 
+    client: 'pg',
+    connection: DATABASE_URL
+})
 
 const app = express();
+
+app.set('db', db)
 
 const morganOption = (NODE_ENV === 'production')
     ? 'tiny'
@@ -22,6 +30,8 @@ app.get('/', (req, res) => {
 app.get('/login', (req, res) => {
     res.send('Hello, world!')
 })
+
+app.use('/feedback', feedbackRouter)
 
 app.use(function errorHandler(error, req, res, next) {
     let response;
