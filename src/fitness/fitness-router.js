@@ -33,7 +33,7 @@ fitnessRouter
           error: `Missing '${key}' in request body`
         })
 
-    newFitness.user_id = req.user.id
+    newFitness.fitness_id = req.fitness.id
 
     FitnessService.insertFitness(
       req.app.get('db'),

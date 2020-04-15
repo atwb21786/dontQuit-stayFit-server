@@ -23,17 +23,17 @@ describe.only('Weigh In Endpoints', function() {
         const weights = [
             {
                 id: 1,
-                measurement: 150.4,
+                measurement: '150.4',
                 date_created: '2029-01-22T16:28:32.615Z'
             },
             {
                 id: 2,
-                measurement: 155.8,
+                measurement: '155.8',
                 date_created: '2029-01-22T16:28:32.615Z'
             },
             {
                 id: 3,
-                measurement: 185.4,
+                measurement: '185.4',
                 date_created: '2029-01-22T16:28:32.615Z'
             }
         ];
