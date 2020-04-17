@@ -1,5 +1,5 @@
 require('dotenv').config();
-console.log(process.env.TEST_DB_URL)
+
 module.exports = {
   "migrationDirectory": "migrations",
   "driver": "pg",

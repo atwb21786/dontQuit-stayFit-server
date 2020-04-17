@@ -4,7 +4,8 @@ TRUNCATE
     goals,
     weigh_in,
     fitness,
-    feedback
+    feedback,
+    users
     RESTART IDENTITY CASCADE;
 
 INSERT INTO goals (content, date_created)
@@ -29,5 +30,10 @@ VALUES
     ('Worked out each morning for an hour for past 2 weeks, have lost 10 pounds since!', now()),
     ('Have been unable to reach my fitness goals set last week.  Will look to meet those goals this week and remain accountable', now()),
     ('Have gained weight despite workout consistency. Must restrict carbohyrates in meals going forward', now());
+
+
+INSERT INTO users (user_name, password)
+VALUES
+    ('ABC', '123');
 
 COMMIT; 

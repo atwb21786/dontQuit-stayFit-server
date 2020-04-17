@@ -2,7 +2,7 @@ const express = require('express')
 const path = require('path')
 const xss = require('xss')
 const WeightService = require('./weight-service')
-const { requireAuth } = require('../middleware/auth')
+const { requireAuth } = require('../middleware/jwt-auth')
 
 const weightRouter = express.Router()
 const jsonBodyParser = express.json()

@@ -2,7 +2,7 @@ const express = require('express')
 const path = require('path')
 const xss = require('xss')
 const FitnessService = require('./fitness-service')
-const { requireAuth } = require('../middleware/auth')
+const { requireAuth } = require('../middleware/jwt-auth')
 
 const fitnessRouter = express.Router()
 const jsonBodyParser = express.json()

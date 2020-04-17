@@ -2,7 +2,7 @@ const express = require('express')
 const path = require('path')
 const xss = require('xss')
 const FeedbackService = require('./feedback-service')
-const { requireAuth } = require('../middleware/auth')
+const { requireAuth } = require('../middleware/jwt-auth')
 
 const feedbackRouter = express.Router()
 const jsonBodyParser = express.json()

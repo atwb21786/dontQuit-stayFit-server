@@ -12,6 +12,8 @@ const GoalsService = require('./goals/goals-service')
 const FitnessService = require('./fitness/fitness-service')
 const FeedbackService = require('./feedback/feedback-service')
 const WeightService = require('./weight/weight-service')
+const authRouter = require('./auth/auth-router')
+const usersRouter = require('./users/users-router')
 const knex = require('knex')
 const db = knex({ 
     client: 'pg',
@@ -105,6 +107,9 @@ app.get('/weigh_in/:weigh_in_id', (req, res, next) => {
         })
         .catch(next)
     })
+
+app.use('/auth', authRouter)
+app.use('/users', usersRouter)
 
 app.use('/goals', goalsRouter)
 app.use('/feedback', feedbackRouter)
