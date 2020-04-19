@@ -24,16 +24,14 @@ feedbackRouter
         .catch(next)
   })
   .post(requireAuth, jsonBodyParser, (req, res, next) => {
-    const { id, date_created, content } = req.body
-    const newFeedback = { id, date_created, content }
+    const { date_created, content } = req.body
+    const newFeedback = { date_created, content }
 
     for (const [key, value] of Object.entries(newFeedback))
       if (value == null)
         return res.status(400).json({
           error: `Missing '${key}' in request body`
         })
-
-    newFeedback.user_id = req.user.id
 
     FeedbackService.insertFeedback(
       req.app.get('db'),
@@ -43,7 +41,7 @@ feedbackRouter
         res
           .status(201)
           .location(path.posix.join(req.originalUrl, `/${feedback.id}`))
-          .json(FeedbackService.serializeFeedback(feedback))
+          .json(serializeFeedback(feedback))
       })
       .catch(next)
     })
