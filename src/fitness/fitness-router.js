@@ -24,16 +24,14 @@ fitnessRouter
         .catch(next)
   })
   .post(requireAuth, jsonBodyParser, (req, res, next) => {
-    const { id, date_created, content } = req.body
-    const newFitness = { id, date_created, content }
+    const { date_created, content } = req.body
+    const newFitness = { date_created, content }
 
     for (const [key, value] of Object.entries(newFitness))
       if (value == null)
         return res.status(400).json({
           error: `Missing '${key}' in request body`
         })
-
-    newFitness.fitness_id = req.fitness.id
 
     FitnessService.insertFitness(
       req.app.get('db'),
@@ -43,7 +41,7 @@ fitnessRouter
         res
           .status(201)
           .location(path.posix.join(req.originalUrl, `/${fitness.id}`))
-          .json(FitnessService.serializeFitness(fitness))
+          .json(serializeFitness(fitness))
       })
       .catch(next)
     })

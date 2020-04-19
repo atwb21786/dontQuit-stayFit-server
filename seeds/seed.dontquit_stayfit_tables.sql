@@ -34,6 +34,6 @@ VALUES
 
 INSERT INTO users (user_name, password)
 VALUES
-    ('ABC', '123');
+    ('ABC', '$2a$10$DYOaMz1kaOTdsYwiXcEdyersvoPyT4G55tcFQ.72JtOz8SDs6yIRS');
 
 COMMIT; 

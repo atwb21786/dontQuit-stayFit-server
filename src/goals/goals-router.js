@@ -15,6 +15,7 @@ const serializeGoals = goals => ({
 
 goalsRouter
   .route('/')
+  .get(requireAuth)
   .get((req, res, next) => {
       const knexInstance = req.app.get('db')
       GoalsService.getAllGoals(knexInstance)
@@ -24,16 +25,14 @@ goalsRouter
         .catch(next)
   })
   .post(requireAuth, jsonBodyParser, (req, res, next) => {
-    const { id, date_created, content } = req.body
-    const newGoals = { id, date_created, content }
+    const { date_created, content } = req.body
+    const newGoals = { date_created, content }
 
     for (const [key, value] of Object.entries(newGoals))
       if (value == null)
         return res.status(400).json({
           error: `Missing '${key}' in request body`
         })
-
-    newGoals.goal_id = req.goal.id
 
     GoalsService.insertGoals(
       req.app.get('db'),
@@ -43,13 +42,14 @@ goalsRouter
         res
           .status(201)
           .location(path.posix.join(req.originalUrl, `/${goals.id}`))
-          .json(GoalsService.serializeGoals(goals))
+          .json(serializeGoals(goals))
       })
       .catch(next)
     })
 
     goalsRouter
         .route('/:goals_id')
+        .all(requireAuth)
         .all((req, res, next) => {
             GoalsService.getById(
                 req.app.get('db'),

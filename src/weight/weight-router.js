@@ -24,16 +24,14 @@ weightRouter
         .catch(next)
   })
   .post(requireAuth, jsonBodyParser, (req, res, next) => {
-    const { id, date_created, measurement } = req.body
-    const newWeight = { id, date_created, measurement }
+    const { date_created, measurement } = req.body
+    const newWeight = { date_created, measurement }
 
     for (const [key, value] of Object.entries(newWeight))
       if (value == null)
         return res.status(400).json({
           error: `Missing '${key}' in request body`
         })
-
-    newWeight.weigh_in_id = req.weigh_in.id
 
     WeightService.insertWeight(
       req.app.get('db'),
@@ -43,7 +41,7 @@ weightRouter
         res
           .status(201)
           .location(path.posix.join(req.originalUrl, `/${wt.id}`))
-          .json(WeightService.serializeWeight(wt))
+          .json(serializeWeight(wt))
       })
       .catch(next)
     })

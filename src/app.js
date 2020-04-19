@@ -14,6 +14,7 @@ const FeedbackService = require('./feedback/feedback-service')
 const WeightService = require('./weight/weight-service')
 const authRouter = require('./auth/auth-router')
 const usersRouter = require('./users/users-router')
+const UsersService = require('./users/users-service')
 const knex = require('knex')
 const db = knex({ 
     client: 'pg',
@@ -102,6 +103,15 @@ app.get('/weigh_in', (req, res, next) => {
 app.get('/weigh_in/:weigh_in_id', (req, res, next) => {
     const knexInstance = req.app.get('db')
     WeightService.getById(knexInstance, req.params.weigh_in_id)
+        .then(wt => {
+        res.json(wt)
+        })
+        .catch(next)
+    })
+
+app.get('/users', (req, res, next) => {
+    const knexInstance = req.app.get('db')
+    UsersService.hasUserWithName(knexInstance)
         .then(wt => {
         res.json(wt)
         })
