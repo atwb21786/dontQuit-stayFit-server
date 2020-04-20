@@ -74,7 +74,7 @@ goalsRouter
                 req.app.get('db'),
                 req.params.goals_id
             )
-                .then(numRowsAffected => {
+                .then(() => {
                     res.status(204).end()
                 })
                 .catch(next)

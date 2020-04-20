@@ -59,7 +59,6 @@ feedbackRouter
                             error: { message: `Feedback doesn't exist`}
                         })
                     }
-                    res.feedback = feedback
                     next()
                 })
                 .catch(next)

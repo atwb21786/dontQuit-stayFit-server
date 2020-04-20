@@ -5,6 +5,7 @@ const GoalsService = {
     },
   
     getById(knex, id) {
+      console.log('GOAL ID ', id)
       return knex.from('goals').select("*").where('id', id).first()
     },
     insertGoals(knex, goals) {

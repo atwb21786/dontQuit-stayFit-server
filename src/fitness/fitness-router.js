@@ -47,7 +47,7 @@ fitnessRouter
     })
 
     fitnessRouter
-        .route('/:feedback_id')
+        .route('/:fitness_id')
         .all((req, res, next) => {
             FitnessService.getById(
                 req.app.get('db'),
@@ -59,7 +59,6 @@ fitnessRouter
                             error: { message: `Fitness doesn't exist`}
                         })
                     }
-                    res.fitness = fitness
                     next()
                 })
                 .catch(next)

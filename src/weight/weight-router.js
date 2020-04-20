@@ -65,7 +65,7 @@ weightRouter
                 .catch(next)
         })
         .get((req, res, next) => {
-            res.json(serializeWeight(res.goals))
+            res.json(serializeWeight(res.weight))
         })
         .delete((req, res, next) => {
             WeightService.deleteWeight(
