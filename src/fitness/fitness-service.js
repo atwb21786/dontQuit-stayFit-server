@@ -1,7 +1,7 @@
 
 const FitnessService = {
     getAllFitness(knex){
-      return knex.select("*").from('fitness')
+      return knex.select("*").from('fitness').orderBy('id')
     },
   
     getById(knex, id) {

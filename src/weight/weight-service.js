@@ -1,7 +1,7 @@
 
 const WeightService = {
     getAllWeight(knex){
-      return knex.select("*").from('weigh_in')
+      return knex.select("*").from('weigh_in').orderBy('id')
     },
   
     getById(knex, id) {

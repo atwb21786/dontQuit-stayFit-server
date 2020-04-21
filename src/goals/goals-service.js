@@ -1,7 +1,7 @@
 
 const GoalsService = {
     getAllGoals(knex){
-      return knex.select("*").from('goals')
+      return knex.select("*").from('goals').orderBy('id')
     },
   
     getById(knex, id) {

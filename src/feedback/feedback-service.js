@@ -1,7 +1,7 @@
 
 const FeedbackService = {
   getAllFeedback(knex){
-    return knex.select("*").from('feedback')
+    return knex.select("*").from('feedback').orderBy('id')
   },
 
   getById(knex, id) {
