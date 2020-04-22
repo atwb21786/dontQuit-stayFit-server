@@ -18,7 +18,7 @@ goalsRouter
   .get(requireAuth)
   .get((req, res, next) => {
       const knexInstance = req.app.get('db')
-      GoalsService.getAllGoals(knexInstance)
+      GoalsService.getAllGoals(knexInstance, req.user.id)
         .then(goal => {
             res.json(goal.map(serializeGoals))
         })
@@ -26,7 +26,7 @@ goalsRouter
   })
   .post(requireAuth, jsonBodyParser, (req, res, next) => {
     const { date_created, content } = req.body
-    const newGoals = { date_created, content }
+    const newGoals = { date_created, content, user_id: req.user.id }
 
     for (const [key, value] of Object.entries(newGoals))
       if (value == null)
