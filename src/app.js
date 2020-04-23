@@ -15,15 +15,11 @@ const WeightService = require('./weight/weight-service')
 const authRouter = require('./auth/auth-router')
 const usersRouter = require('./users/users-router')
 const UsersService = require('./users/users-service')
-const knex = require('knex')
-const db = knex({ 
-    client: 'pg',
-    connection: DATABASE_URL
-})
+
 
 const app = express();
 
-app.set('db', db)
+
 
 const morganOption = NODE_ENV === 'production'
     ? 'tiny'
