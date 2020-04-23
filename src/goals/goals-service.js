@@ -1,10 +1,9 @@
 
 const GoalsService = {
     getAllGoals(knex, userId){
-      return knex.select("*").from('goals').where({ user_id: userId })
+      return knex.select("*").from('goals').where({ user_id: userId }).orderBy('id')
     },
     getById(knex, id) {
-      console.log('GOAL ID ', id)
       return knex.from('goals').select("*").where('id', id).first()
     },
     insertGoals(knex, goals) {

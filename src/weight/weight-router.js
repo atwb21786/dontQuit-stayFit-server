@@ -15,9 +15,10 @@ const serializeWeight = weight => ({
 
 weightRouter
   .route('/')
+  .all(requireAuth)
   .get((req, res, next) => {
       const knexInstance = req.app.get('db')
-      WeightService.getAllWeight(knexInstance)
+      WeightService.getAllWeight(knexInstance, req.user.id)
         .then(weight => {
             res.json(weight.map(serializeWeight))
         })
@@ -25,7 +26,7 @@ weightRouter
   })
   .post(requireAuth, jsonBodyParser, (req, res, next) => {
     const { date_created, measurement } = req.body
-    const newWeight = { date_created, measurement }
+    const newWeight = { date_created, measurement, user_id: req.user.id }
 
     for (const [key, value] of Object.entries(newWeight))
       if (value == null)
@@ -48,6 +49,7 @@ weightRouter
 
     weightRouter
         .route('/:weigh_in_id')
+        .all(requireAuth)
         .all((req, res, next) => {
             WeightService.getById(
                 req.app.get('db'),
@@ -72,14 +74,14 @@ weightRouter
                 req.app.get('db'),
                 req.params.weigh_in_id
             )
-                .then(numRowsAffected => {
+                .then(() => {
                     res.status(204).end()
                 })
                 .catch(next)
         })
         .patch(jsonBodyParser, (req, res, next) => {
             const { id, date_created, measurement } = req.body
-            const newWeight = { id, date_created, measurement }
+            const newWeight = { id, date_created, measurement, user_id: req.user.id }
 
             const numVals = Object.values(newWeight).filter(Boolean).length
             if (numVals === 0)
@@ -94,7 +96,7 @@ weightRouter
                 req.params.weigh_in_id,
                 newWeight
             )
-                .then(numRowsAffected => {
+                .then(() => {
                     res.status(204).end()
                 })
                 .catch(next)

@@ -15,9 +15,10 @@ const serializeFitness = fitness => ({
 
 fitnessRouter
   .route('/')
+  .all(requireAuth)
   .get((req, res, next) => {
       const knexInstance = req.app.get('db')
-      FitnessService.getAllFitness(knexInstance)
+      FitnessService.getAllFitness(knexInstance, req.user.id)
         .then(fit => {
             res.json(fit.map(serializeFitness))
         })
@@ -25,7 +26,7 @@ fitnessRouter
   })
   .post(requireAuth, jsonBodyParser, (req, res, next) => {
     const { date_created, content } = req.body
-    const newFitness = { date_created, content }
+    const newFitness = { date_created, content, user_id: req.user.id }
 
     for (const [key, value] of Object.entries(newFitness))
       if (value == null)
@@ -48,6 +49,7 @@ fitnessRouter
 
     fitnessRouter
         .route('/:fitness_id')
+        .all(requireAuth)
         .all((req, res, next) => {
             FitnessService.getById(
                 req.app.get('db'),
@@ -71,14 +73,14 @@ fitnessRouter
                 req.app.get('db'),
                 req.params.fitness_id
             )
-                .then(numRowsAffected => {
+                .then(() => {
                     res.status(204).end()
                 })
                 .catch(next)
         })
         .patch(jsonBodyParser, (req, res, next) => {
             const { id, date_created, content } = req.body
-            const newFitness = { id, date_created, content }
+            const newFitness = { id, date_created, content, user_id: req.user.id }
 
             const numVals = Object.values(newFitness).filter(Boolean).length
             if (numVals === 0)
@@ -93,7 +95,7 @@ fitnessRouter
                 req.params.fitness_id,
                 newFitness
             )
-                .then(numRowsAffected => {
+                .then(() => {
                     res.status(204).end()
                 })
                 .catch(next)

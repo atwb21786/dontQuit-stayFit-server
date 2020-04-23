@@ -15,7 +15,7 @@ const serializeGoals = goals => ({
 
 goalsRouter
   .route('/')
-  .get(requireAuth)
+  .all(requireAuth)
   .get((req, res, next) => {
       const knexInstance = req.app.get('db')
       GoalsService.getAllGoals(knexInstance, req.user.id)
@@ -81,7 +81,7 @@ goalsRouter
         })
         .patch(jsonBodyParser, (req, res, next) => {
             const { id, date_created, content } = req.body
-            const newGoals = { id, date_created, content }
+            const newGoals = { id, date_created, content, user_id: req.user.id }
 
             const numVals = Object.values(newGoals).filter(Boolean).length
             if (numVals === 0)
@@ -96,7 +96,7 @@ goalsRouter
                 req.params.goals_id,
                 newGoals
             )
-                .then(numRowsAffected => {
+                .then(() => {
                     res.status(204).end()
                 })
                 .catch(next)

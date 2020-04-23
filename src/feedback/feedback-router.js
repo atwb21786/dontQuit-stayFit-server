@@ -15,9 +15,10 @@ const serializeFeedback = feedback => ({
 
 feedbackRouter
   .route('/')
+  .all(requireAuth)
   .get((req, res, next) => {
       const knexInstance = req.app.get('db')
-      FeedbackService.getAllFeedback(knexInstance)
+      FeedbackService.getAllFeedback(knexInstance, req.user.id)
         .then(fb => {
             res.json(fb.map(serializeFeedback))
         })
@@ -25,7 +26,7 @@ feedbackRouter
   })
   .post(requireAuth, jsonBodyParser, (req, res, next) => {
     const { date_created, content } = req.body
-    const newFeedback = { date_created, content }
+    const newFeedback = { date_created, content, user_id: req.user.id }
 
     for (const [key, value] of Object.entries(newFeedback))
       if (value == null)
@@ -48,6 +49,7 @@ feedbackRouter
 
     feedbackRouter
         .route('/:feedback_id')
+        .all(requireAuth)
         .all((req, res, next) => {
             FeedbackService.getById(
                 req.app.get('db'),
@@ -71,14 +73,14 @@ feedbackRouter
                 req.app.get('db'),
                 req.params.feedback_id
             )
-                .then(numRowsAffected => {
+                .then(() => {
                     res.status(204).end()
                 })
                 .catch(next)
         })
         .patch(jsonBodyParser, (req, res, next) => {
             const { id, date_created, content } = req.body
-            const newFeedback = { id, date_created, content }
+            const newFeedback = { id, date_created, content, user_id: req.user.id }
 
             const numVals = Object.values(newFeedback).filter(Boolean).length
             if (numVals === 0)
@@ -93,7 +95,7 @@ feedbackRouter
                 req.params.feedback_id,
                 newFeedback
             )
-                .then(numRowsAffected => {
+                .then(() => {
                     res.status(204).end()
                 })
                 .catch(next)
