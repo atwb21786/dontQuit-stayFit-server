@@ -25,98 +25,13 @@ const app = express();
 
 app.set('db', db)
 
-const morganOption = (NODE_ENV === 'production')
+const morganOption = NODE_ENV === 'production'
     ? 'tiny'
     : 'common';
 
 app.use(morgan(morganOption))
 app.use(helmet())
 app.use(cors())
-
-// app.get('/', (req, res) => {
-//     res.send('Hello, world!')
-// })
-
-// app.get('/goals', (req, res, next) => {
-//     const knexInstance = req.app.get('db')
-//     GoalsService.getAllGoals(knexInstance)
-//       .then(goal => {
-//         res.json(goal)
-//       })
-//       .catch(next)
-//   })
-
-// app.get('/goals/:goals_id', (req, res, next) => {
-// const knexInstance = req.app.get('db')
-// GoalsService.getById(knexInstance, req.params.goals_id)
-//     .then(goal => {
-//     res.json(goal)
-//     })
-//     .catch(next)
-// })
-
-// app.get('/fitness', (req, res, next) => {
-//     const knexInstance = req.app.get('db')
-//     FitnessService.getAllFitness(knexInstance)
-//       .then(fit => {
-//         res.json(fit)
-//       })
-//       .catch(next)
-//   })
-
-// app.get('/fitness/:fitness_id', (req, res, next) => {
-// const knexInstance = req.app.get('db')
-// FitnessService.getById(knexInstance, req.params.fitness_id)
-//     .then(fit => {
-//     res.json(fit)
-//     })
-//     .catch(next)
-// })
-
-// app.get('/feedback', (req, res, next) => {
-//     const knexInstance = req.app.get('db')
-//     FeedbackService.getAllFeedback(knexInstance)
-//       .then(fb => {
-//         res.json(fb)
-//       })
-//       .catch(next)
-//   })
-
-// app.get('/feedback/:feedback_id', (req, res, next) => {
-// const knexInstance = req.app.get('db')
-// FeedbackService.getById(knexInstance, req.params.feedback_id)
-//     .then(fb => {
-//     res.json(fb)
-//     })
-//     .catch(next)
-// })
-
-// app.get('/weigh_in', (req, res, next) => {
-//     const knexInstance = req.app.get('db')
-//     WeightService.getAllWeight(knexInstance)
-//       .then(wt => {
-//         res.json(wt)
-//       })
-//       .catch(next)
-//   })
-
-// app.get('/weigh_in/:weigh_in_id', (req, res, next) => {
-//     const knexInstance = req.app.get('db')
-//     WeightService.getById(knexInstance, req.params.weigh_in_id)
-//         .then(wt => {
-//         res.json(wt)
-//         })
-//         .catch(next)
-//     })
-
-// app.get('/users', (req, res, next) => {
-//     const knexInstance = req.app.get('db')
-//     UsersService.hasUserWithName(knexInstance)
-//         .then(wt => {
-//         res.json(wt)
-//         })
-//         .catch(next)
-//     })
 
 app.use('/auth', authRouter)
 app.use('/users', usersRouter)

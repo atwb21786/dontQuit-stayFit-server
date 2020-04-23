@@ -17,6 +17,9 @@
     "url": "git+https://github.com/atwb21786/express-boilerplate.git"
   },
   "keywords": [],
+  "engines": {
+    "node": "12.16.1"
+  },
   "author": "",
   "license": "ISC",
   "bugs": {
