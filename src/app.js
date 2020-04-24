@@ -3,18 +3,13 @@ const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
 const helmet = require('helmet')
-const { NODE_ENV, DATABASE_URL } = require('./config')
+const { NODE_ENV } = require('./config')
 const feedbackRouter = require('./feedback/feedback-router')
 const goalsRouter = require('./goals/goals-router')
 const fitnessRouter = require('./fitness/fitness-router')
 const weightRouter = require('./weight/weight-router')
-const GoalsService = require('./goals/goals-service')
-const FitnessService = require('./fitness/fitness-service')
-const FeedbackService = require('./feedback/feedback-service')
-const WeightService = require('./weight/weight-service')
 const authRouter = require('./auth/auth-router')
 const usersRouter = require('./users/users-router')
-const UsersService = require('./users/users-service')
 
 
 const app = express();
@@ -39,11 +34,12 @@ app.use('/fitness', fitnessRouter)
 app.use('/weigh_in', weightRouter)
 
 app.use(function errorHandler(error, req, res, next) {
+    console.error(error.message)
     let response;
     if (NODE_ENV === 'production') {
         response = { error: { message: 'server error' } }
     } else {
-        console.error(error)
+        
         response = { message: error.message, error }
     }
     res.status(500).json(response)
