@@ -1,26 +1,56 @@
-# Express Boilerplate!
+## THE DONT QUIT STAY FIT APP
 
-This is a boilerplate project used for starting new projects!
+[DONT QUIT STAY FIT APP](http://dontquit-stayfit-client.now.sh)
 
-## Set up
+<img src="/src/Image/capstonepage.png" alt="Landing Page">
 
-Complete the following steps to start a new project (NEW-PROJECT-NAME):
+Welcome to the "Don't Quit, Stay Fit!" fitness application!  
 
-1. Clone this repository to your local machine `git clone BOILERPLATE-URL NEW-PROJECTS-NAME`
-2. `cd` into the cloned repository
-3. Make a fresh start of the git history for this project with `rm -rf .git && git init`
-4. Install the node dependencies `npm install`
-5. Move the example Environment file to `.env` that will be ignored by git and read by the express server `mv example.env .env`
-6. Edit the contents of the `package.json` to use NEW-PROJECT-NAME instead of `"name": "express-boilerplate",`
+This application allows you to combine many of the functions that you would normally have to use in multiple fitness apps into just one!  This app provides you also with an
+opporunity to set goals and give yourself feedback with regards to how you are achieving those goals relative to your progress.  Whenever you enter a Goal, Weight, Exercise (Fitness) or Feedback (Accountability), you can chart your progress through the log that outputs beneath the input field, giving you the ability to see how you are doing and what you need to improve upon.  A great way to set goals and analyze your progress!
 
-## Scripts
+## In this app, you are able to:
+- Register an account.
+- Sign in with either the demo account or your own account
+- Access one of four links that allow you to enter data for Goals, Weight, Fitness and Feedback (Accountability)
+- You are about to enter data, delete data and update data.
+- You are able to cancel out of updating or entering data.
+- You are able to navigate back to the homepage from any of the four links.
+- You are able to logout and return to the Landing Page from any of the four webpages AND the homepage.
 
-Start the application `npm start`
+## API Documentation: 
+- POST /users
+- https://whipsering-peak-20829.herokuapp.com/users
+- allows you to create a username and password for registration
 
-Start nodemon for the application `npm run dev`
+- POST /auth/login
+- https://whispering-peak-20829.herokuapp.com/auth/login
+- allows you to login once you enter the correct username, password combination
 
-Run the tests `npm test`
+- POST /goals; POST /weigh_in; POST /fitness; POST /feedback
+- https://whispering-peak-20829.herokuapp.com/goals; https://whispering-peak-20829.herokuapp.com/weigh_in; https://whispering-peak-20829.herokuapp.com/fitness; https://whispering-peak-20829.herokuapp.com/feedback
+- allows you to post data to any of the four databases
 
-## Deploying
+- GET /goals; GET /weigh_in; GET /fitness; GET /feedback
+- https://whispering-peak-20829.herokuapp.com/goals/; https://whispering-peak-20829.herokuapp.com/weigh_in/; https://whispering-peak-20829.herokuapp.com/fitness/; https://whispering-peak-20829.herokuapp.com/feedback/
+- allows you to get data to the four databases for only the POST requests you have made
 
-When your new project is ready for deployment, add a new Heroku application with `heroku create`. This will make a new git remote called "heroku" and you can then `npm run deploy` which will push to this remote's master branch.
+- PATCH /goals; PATCH /weigh_in; PATCH /fitness; PATCH /feedback
+- https://whispering-peak-20829.herokuapp.com/goals/:goals_id; https://whispering-peak-20829.herokuapp.com/weigh_in/:weigh_in_id; https://whispering-peak-20829.herokuapp.com/fitness/fitness_id; https://whispering-peak-20829.herokuapp.com/feedback/feedback_id
+- allows you to update data 
+
+- DELETE /goals; DELETE /weigh_in; DELETE /fitness; DELETE /feedback
+- https://whispering-peak-20829.herokuapp.com/goals/:goals_id; https://whispering-peak-20829.herokuapp.com/weigh_in/:weigh_in_id; https://whispering-peak-20829.herokuapp.com/fitness/fitness_id; https://whispering-peak-20829.herokuapp.com/feedback/feedback_id
+- allows you to delete data
+
+
+
+## Technologies Used
+- ReactJS
+- Express 
+- NodeJS
+- Postgres
+- SQL
+- HTML
+- CSS
+
