@@ -3,7 +3,7 @@ const knex = require('knex')
 const app = require('../src/app')
 
 describe.only('Weigh In Endpoints', function() {
-    let db 
+    let db
 
     before('make knex instance', () => {
         db = knex({

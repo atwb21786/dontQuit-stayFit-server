@@ -1,10 +1,11 @@
 const { expect } = require('chai')
 const knex = require('knex')
 const app = require('../src/app')
+const helpers = require('../test/test-helpers')
+
 
 describe.only('Goals Endpoints', function() {
-    let db 
-
+    let db
     before('make knex instance', () => {
         db = knex({
             client: 'pg',
@@ -12,6 +13,12 @@ describe.only('Goals Endpoints', function() {
         })
         app.set('db', db)
     })
+
+    function makeAuthHeader(user) {
+        const token = Buffer.from(`${user.user_id}:${user.password}`).toString('base64')
+        console.log(token)
+        return `Bearer ${token}`
+    }
 
     after('disconnect from db', () => db.destroy())
 
@@ -24,17 +31,20 @@ describe.only('Goals Endpoints', function() {
             {
                 id: 1,
                 content: 'To lose weight and feel great!',
-                date_created: '2029-01-22T16:28:32.615Z'
+                date_created: '2029-01-22T16:28:32.615Z',
+                user_id: 2
             },
             {
                 id: 2,
                 content: 'To workout everyday',
-                date_created: '2029-01-22T16:28:32.615Z'
+                date_created: '2029-01-22T16:28:32.615Z', 
+                user_id: 3
             },
             {
                 id: 3,
                 content: 'To sleep 8 hours a night',
-                date_created: '2029-01-22T16:28:32.615Z'
+                date_created: '2029-01-22T16:28:32.615Z', 
+                user_id: 1
             }
         ];
 
@@ -45,8 +55,11 @@ describe.only('Goals Endpoints', function() {
         })
 
         it('GET /goals responds with 200 and all the goals', () => {
+            const users = {user_id: 'ABC', password: '123'}
+            console.log(users)
             return supertest(app)
                 .get('/goals')
+                .set('Authorization', helpers.makeAuthHeader(users))
                 .expect(200, goal)
         })
 
