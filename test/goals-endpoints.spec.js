@@ -1,11 +1,12 @@
-const { expect } = require('chai')
 const knex = require('knex')
 const app = require('../src/app')
-const helpers = require('../test/test-helpers')
+const jwt = require("jsonwebtoken")
+const { makeUsersArray } = require('./test-helpers')
 
 
 describe.only('Goals Endpoints', function() {
     let db
+
     before('make knex instance', () => {
         db = knex({
             client: 'pg',
@@ -14,17 +15,19 @@ describe.only('Goals Endpoints', function() {
         app.set('db', db)
     })
 
-    function makeAuthHeader(user) {
-        const token = Buffer.from(`${user.user_id}:${user.password}`).toString('base64')
-        console.log(token)
+    function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
+        const token = jwt.sign({ user_id: user.id }, secret, {
+            subject: user.user_name, 
+            algorithm: 'HS256'
+        })
         return `Bearer ${token}`
     }
 
     after('disconnect from db', () => db.destroy())
 
-    before('clean the table', () => db('goals').truncate())
+    before('clean the table', () => db.raw('TRUNCATE goals, users RESTART IDENTITY CASCADE;'))
 
-    afterEach('cleanup', () => db('goals').truncate())
+    afterEach('cleanup', () => db.raw('TRUNCATE goals, users RESTART IDENTITY CASCADE;'))
 
     context('Given there are goals in the database', () => {
         const goal = [
@@ -48,18 +51,21 @@ describe.only('Goals Endpoints', function() {
             }
         ];
 
-        this.beforeEach('insert goals', () => {
-            return db
+        beforeEach('insert goals', () => {
+            const users = makeUsersArray();
+            return db('users').insert(users).then(() => {
+                return db
                 .into('goals')
                 .insert(goal)
+            }) 
         })
 
         it('GET /goals responds with 200 and all the goals', () => {
-            const users = {user_id: 'ABC', password: '123'}
+            const users = {user_id: 'ABC', password: '123'};
             console.log(users)
             return supertest(app)
                 .get('/goals')
-                .set('Authorization', helpers.makeAuthHeader(users))
+                .set('Authorization', makeAuthHeader(users))
                 .expect(200, goal)
         })
 
