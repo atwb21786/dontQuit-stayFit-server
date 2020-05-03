@@ -10,7 +10,8 @@ const jsonBodyParser = express.json()
 const serializeGoals = goals => ({
     id: goals.id,
     content: xss(goals.content),
-    date_created: goals.date_created
+    date_created: goals.date_created,
+    user_id: goals.user_id
 })
 
 goalsRouter
@@ -67,7 +68,7 @@ goalsRouter
                 .catch(next)
         })
         .get((req, res, next) => {
-            res.json(serializeGoals(res.goals))
+            res.json(serializeGoals(res.goal))
         })
         .delete((req, res, next) => {
             GoalsService.deleteGoals(

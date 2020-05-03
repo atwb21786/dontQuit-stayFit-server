@@ -51,8 +51,18 @@ describe.only('Goals Endpoints', function() {
             }
         ];
 
+        const newGoal = [
+            {
+                id: 3,
+                content: 'To sleep 8 hours a night',
+                date_created: '2029-01-22T16:28:32.615Z', 
+                user_id: 1
+            }
+        ]
+
+        const users = makeUsersArray();
+
         beforeEach('insert goals', () => {
-            const users = makeUsersArray();
             return db('users').insert(users).then(() => {
                 return db
                 .into('goals')
@@ -61,12 +71,10 @@ describe.only('Goals Endpoints', function() {
         })
 
         it('GET /goals responds with 200 and all the goals', () => {
-            const users = {user_id: 'ABC', password: '123'};
-            console.log(users)
             return supertest(app)
                 .get('/goals')
-                .set('Authorization', makeAuthHeader(users))
-                .expect(200, goal)
+                .set('Authorization', makeAuthHeader(users[0]))
+                .expect(200, newGoal)
         })
 
         it('GET /goals/:goals_id responds with 200 and the specified goal', () => {
@@ -74,6 +82,7 @@ describe.only('Goals Endpoints', function() {
             const expectedGoal = goal[goalsId - 1]
             return supertest(app)
                 .get(`/goals/${goalsId}`)
+                .set('Authorization', makeAuthHeader(users[0]))
                 .expect(200, expectedGoal)
         })
     })
