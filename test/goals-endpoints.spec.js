@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken")
 const { makeUsersArray } = require('./test-helpers')
 
 
-describe.only('Goals Endpoints', function() {
+describe('Goals Endpoints', function() {
     let db
 
     before('make knex instance', () => {

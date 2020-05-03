@@ -3,7 +3,7 @@ const app = require('../src/app')
 const jwt = require("jsonwebtoken")
 const { makeUsersArray } = require('./test-helpers')
 
-describe.only('Feedback Endpoints', function() {
+describe('Feedback Endpoints', function() {
     let db 
 
     before('make knex instance', () => {
