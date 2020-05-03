@@ -10,7 +10,8 @@ const jsonBodyParser = express.json()
 const serializeFitness = fitness => ({
     id: fitness.id,
     content: xss(fitness.content),
-    date_created: fitness.date_created
+    date_created: fitness.date_created,
+    user_id: fitness.user_id
 })
 
 fitnessRouter
@@ -55,12 +56,13 @@ fitnessRouter
                 req.app.get('db'),
                 req.params.fitness_id
             )
-                .then(fit => {
-                    if(!fit) {
+                .then(fitness => {
+                    if(!fitness) {
                         return res.status(404).json({
                             error: { message: `Fitness doesn't exist`}
                         })
                     }
+                    res.fitness = fitness
                     next()
                 })
                 .catch(next)

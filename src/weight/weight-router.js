@@ -10,7 +10,8 @@ const jsonBodyParser = express.json()
 const serializeWeight = weight => ({
     id: weight.id,
     measurement: xss(weight.measurement),
-    date_created: weight.date_created
+    date_created: weight.date_created,
+    user_id: weight.user_id
 })
 
 weightRouter
@@ -55,13 +56,13 @@ weightRouter
                 req.app.get('db'),
                 req.params.weigh_in_id
             )
-                .then(wt => {
-                    if(!wt) {
+                .then(weight => {
+                    if(!weight) {
                         return res.status(404).json({
                             error: { message: `Weight doesn't exist`}
                         })
                     }
-                    res.wt = wt
+                    res.weight = weight
                     next()
                 })
                 .catch(next)

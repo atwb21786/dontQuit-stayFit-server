@@ -10,7 +10,8 @@ const jsonBodyParser = express.json()
 const serializeFeedback = feedback => ({
     id: feedback.id,
     content: xss(feedback.content),
-    date_created: feedback.date_created
+    date_created: feedback.date_created,
+    user_id: feedback.user_id
 })
 
 feedbackRouter
@@ -55,12 +56,13 @@ feedbackRouter
                 req.app.get('db'),
                 req.params.feedback_id
             )
-                .then(fb => {
-                    if(!fb) {
+                .then(feedback => {
+                    if(!feedback) {
                         return res.status(404).json({
                             error: { message: `Feedback doesn't exist`}
                         })
                     }
+                    res.feedback = feedback
                     next()
                 })
                 .catch(next)
